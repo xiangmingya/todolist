@@ -1,0 +1,52 @@
+# 环境配置
+.env
+.env.local
+.env.*.local
+
+# 编辑器和 IDE
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.DS_Store
+Thumbs.db
+
+# 日志文件
+*.log
+logs/
+error_log
+access_log
+
+# 缓存文件
+cache/
+tmp/
+temp/
+*.cache
+
+# 上传文件
+uploads/
+files/
+
+# 依赖和包
+vendor/
+node_modules/
+composer.lock
+package-lock.json
+
+# 操作系统文件
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 备份文件
+*.bak
+*.backup
+*.sql
+*.zip
+*.tar.gz
+
+# 数据库配置（如果使用独立配置文件）
+config/database.php
+
+# 会话文件
+sessions/
