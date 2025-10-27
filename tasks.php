@@ -12,12 +12,12 @@ $taskManager = new TaskManager($auth->getUserId());
 $filters = [
     'status' => $_GET['status'] ?? '',
     'priority' => $_GET['priority'] ?? '',
-    'category' => $_GET['category'] ?? '',
+    'tag' => $_GET['tag'] ?? '',
     'search' => $_GET['search'] ?? ''
 ];
 
 $tasks = $taskManager->getTasks($filters);
-$categories = $taskManager->getCategories();
+$tags = $taskManager->getTags();
 ?>
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -72,12 +72,12 @@ $categories = $taskManager->getCategories();
                 </div>
 
                 <div class="filter-group">
-                    <select name="category">
+                    <select name="tag">
                         <option value="">所有标签</option>
-                        <?php foreach ($categories as $category): ?>
-                            <option value="<?php echo htmlspecialchars($category); ?>" 
-                                    <?php echo $filters['category'] === $category ? 'selected' : ''; ?>>
-                                <?php echo htmlspecialchars($category); ?>
+                        <?php foreach ($tags as $tag): ?>
+                            <option value="<?php echo htmlspecialchars($tag); ?>" 
+                                    <?php echo $filters['tag'] === $tag ? 'selected' : ''; ?>>
+                                <?php echo htmlspecialchars($tag); ?>
                             </option>
                         <?php endforeach; ?>
                     </select>
@@ -135,7 +135,7 @@ $categories = $taskManager->getCategories();
                                             <?php echo getPriorityLabel($task['priority']); ?>
                                         </span>
                                     </td>
-                                    <td><?php echo htmlspecialchars($task['category'] ?: '-'); ?></td>
+                                    <td><?php echo htmlspecialchars($task['tag'] ?: '-'); ?></td>
                                     <td>
                                         <?php if ($task['due_date']): ?>
                                             <span class="<?php echo (strtotime($task['due_date']) < time() && $task['status'] !== 'completed') ? 'text-danger' : ''; ?>">
@@ -213,11 +213,11 @@ $categories = $taskManager->getCategories();
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="taskCategory">标签</label>
-                        <input type="text" id="taskCategory" name="category" list="categoryList">
-                        <datalist id="categoryList">
-                            <?php foreach ($categories as $category): ?>
-                                <option value="<?php echo htmlspecialchars($category); ?>">
+                        <label for="taskTag">标签</label>
+                        <input type="text" id="taskTag" name="tag" list="tagList">
+                        <datalist id="tagList">
+                            <?php foreach ($tags as $tag): ?>
+                                <option value="<?php echo htmlspecialchars($tag); ?>">
                             <?php endforeach; ?>
                         </datalist>
                     </div>

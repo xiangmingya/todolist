@@ -87,13 +87,13 @@ $allTags = $tagManager->getTags();
                                     </div>
                                     <div class="task-content">
                                         <h4 <?php echo $task['status'] === 'completed' ? 'style="text-decoration: line-through;"' : ''; ?>><?php echo htmlspecialchars($task['title']); ?></h4>
-                                        <?php if ($task['due_date'] || $task['category']): ?>
+                                        <?php if ($task['due_date'] || $task['tag']): ?>
                                             <div class="task-meta">
                                                 <?php if ($task['due_date']): ?>
                                                     <span class="task-date">📅 <?php echo date('m月d日', strtotime($task['due_date'])); ?></span>
                                                 <?php endif; ?>
-                                                <?php if ($task['category']): ?>
-                                                    <span class="task-category">🏷️ <?php echo htmlspecialchars($task['category']); ?></span>
+                                                <?php if ($task['tag']): ?>
+                                                    <span class="task-tag">🏷️ <?php echo htmlspecialchars($task['tag']); ?></span>
                                                 <?php endif; ?>
                                                 <span class="<?php echo $priorityClass; ?>"><?php echo $priorityIcon; ?> <?php echo getPriorityLabel($task['priority']); ?></span>
                                             </div>
@@ -206,8 +206,8 @@ $allTags = $tagManager->getTags();
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="taskCategory">标签</label>
-                        <input type="text" id="taskCategory" name="category">
+                        <label for="taskTag">标签</label>
+                        <input type="text" id="taskTag" name="tag">
                     </div>
 
                     <div class="form-group">
