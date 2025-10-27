@@ -220,6 +220,164 @@ class TaskManager {
     }
 }
 
+// 标签管理函数
+class TagManager {
+    private $db;
+    private $userId;
+
+    public function __construct($userId) {
+        $this->db = Database::getInstance();
+        $this->userId = $userId;
+    }
+
+    public function createTag($name, $color = '#808080') {
+        $stmt = $this->db->prepare("INSERT INTO tags (user_id, name, color) VALUES (?, ?, ?)");
+        $stmt->bind_param("iss", $this->userId, $name, $color);
+        
+        if ($stmt->execute()) {
+            return ['success' => true, 'message' => '标签创建成功', 'tag_id' => $this->db->lastInsertId()];
+        } else {
+            if ($stmt->errno == 1062) { // Duplicate entry
+                return ['success' => false, 'message' => '标签名称已存在'];
+            }
+            return ['success' => false, 'message' => '标签创建失败'];
+        }
+    }
+
+    public function getTags() {
+        $stmt = $this->db->prepare("SELECT * FROM tags WHERE user_id = ? ORDER BY name ASC");
+        $stmt->bind_param("i", $this->userId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $tags = [];
+        while ($row = $result->fetch_assoc()) {
+            $tags[] = $row;
+        }
+
+        return $tags;
+    }
+
+    public function getTagById($tagId) {
+        $stmt = $this->db->prepare("SELECT * FROM tags WHERE id = ? AND user_id = ?");
+        $stmt->bind_param("ii", $tagId, $this->userId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->fetch_assoc();
+    }
+
+    public function updateTag($tagId, $data) {
+        $fields = [];
+        $params = [];
+        $types = "";
+
+        if (isset($data['name'])) {
+            $fields[] = "name = ?";
+            $params[] = $data['name'];
+            $types .= "s";
+        }
+
+        if (isset($data['color'])) {
+            $fields[] = "color = ?";
+            $params[] = $data['color'];
+            $types .= "s";
+        }
+
+        if (empty($fields)) {
+            return ['success' => false, 'message' => '没有要更新的字段'];
+        }
+
+        $sql = "UPDATE tags SET " . implode(", ", $fields) . " WHERE id = ? AND user_id = ?";
+        $params[] = $tagId;
+        $params[] = $this->userId;
+        $types .= "ii";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param($types, ...$params);
+
+        if ($stmt->execute()) {
+            return ['success' => true, 'message' => '标签更新成功'];
+        } else {
+            return ['success' => false, 'message' => '标签更新失败'];
+        }
+    }
+
+    public function deleteTag($tagId) {
+        $stmt = $this->db->prepare("DELETE FROM tags WHERE id = ? AND user_id = ?");
+        $stmt->bind_param("ii", $tagId, $this->userId);
+
+        if ($stmt->execute()) {
+            return ['success' => true, 'message' => '标签删除成功'];
+        } else {
+            return ['success' => false, 'message' => '标签删除失败'];
+        }
+    }
+
+    public function addTagToTask($taskId, $tagId) {
+        $stmt = $this->db->prepare("INSERT INTO task_tags (task_id, tag_id) VALUES (?, ?)");
+        $stmt->bind_param("ii", $taskId, $tagId);
+        
+        if ($stmt->execute()) {
+            return ['success' => true, 'message' => '标签已添加'];
+        } else {
+            if ($stmt->errno == 1062) { // Duplicate entry
+                return ['success' => false, 'message' => '标签已存在'];
+            }
+            return ['success' => false, 'message' => '添加标签失败'];
+        }
+    }
+
+    public function removeTagFromTask($taskId, $tagId) {
+        $stmt = $this->db->prepare("DELETE FROM task_tags WHERE task_id = ? AND tag_id = ?");
+        $stmt->bind_param("ii", $taskId, $tagId);
+
+        if ($stmt->execute()) {
+            return ['success' => true, 'message' => '标签已移除'];
+        } else {
+            return ['success' => false, 'message' => '移除标签失败'];
+        }
+    }
+
+    public function getTasksByTag($tagId) {
+        $sql = "SELECT t.* FROM tasks t
+                INNER JOIN task_tags tt ON t.id = tt.task_id
+                WHERE tt.tag_id = ? AND t.user_id = ?
+                ORDER BY t.created_at DESC";
+        
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param("ii", $tagId, $this->userId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $tasks = [];
+        while ($row = $result->fetch_assoc()) {
+            $tasks[] = $row;
+        }
+
+        return $tasks;
+    }
+
+    public function getTagsForTask($taskId) {
+        $sql = "SELECT t.* FROM tags t
+                INNER JOIN task_tags tt ON t.id = tt.tag_id
+                WHERE tt.task_id = ? AND t.user_id = ?
+                ORDER BY t.name ASC";
+        
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param("ii", $taskId, $this->userId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $tags = [];
+        while ($row = $result->fetch_assoc()) {
+            $tags[] = $row;
+        }
+
+        return $tags;
+    }
+}
+
 // 工具函数
 function sanitizeInput($data) {
     $data = trim($data);
