@@ -23,8 +23,10 @@ $stats = $taskManager->getTaskStats();
 
     <div class="container">
         <div class="page-header">
-            <h1>统计图表</h1>
-            <p class="subtitle">任务数据统计与分析</p>
+            <div>
+                <h1>统计图表</h1>
+                <p class="subtitle">任务数据统计与分析</p>
+            </div>
         </div>
 
         <div class="charts-grid">
@@ -65,7 +67,7 @@ $stats = $taskManager->getTaskStats();
                 labels: ['已完成', '未完成'],
                 datasets: [{
                     data: [completedCount, totalCount - completedCount],
-                    backgroundColor: ['#28a745', '#e9ecef'],
+                    backgroundColor: ['#058527', '#f3f3f3'],
                     borderWidth: 0
                 }]
             },
@@ -105,7 +107,7 @@ $stats = $taskManager->getTaskStats();
                         priorityData.medium || 0,
                         priorityData.high || 0
                     ],
-                    backgroundColor: ['#28a745', '#ffc107', '#dc3545'],
+                    backgroundColor: ['#246fe0', '#ff9a14', '#dc4c3e'],
                     borderWidth: 0
                 }]
             },
@@ -135,8 +137,8 @@ $stats = $taskManager->getTaskStats();
         const categoryValues = Object.values(categoryData);
         
         const categoryColors = [
-            '#007bff', '#28a745', '#ffc107', '#dc3545', 
-            '#17a2b8', '#6610f2', '#e83e8c', '#fd7e14'
+            '#dc4c3e', '#246fe0', '#ff9a14', '#058527', 
+            '#8b5cf6', '#ec4899', '#f59e0b', '#10b981'
         ];
         
         new Chart(categoryCtx, {
@@ -175,7 +177,7 @@ $stats = $taskManager->getTaskStats();
                         statusData.in_progress || 0,
                         statusData.completed || 0
                     ],
-                    backgroundColor: ['#6c757d', '#007bff', '#28a745'],
+                    backgroundColor: ['#808080', '#246fe0', '#058527'],
                     borderWidth: 0
                 }]
             },

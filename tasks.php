@@ -32,7 +32,10 @@ $categories = $taskManager->getCategories();
 
     <div class="container">
         <div class="page-header">
-            <h1>任务管理</h1>
+            <div>
+                <h1>任务管理</h1>
+                <p class="subtitle">查看和管理所有任务</p>
+            </div>
             <button class="btn btn-primary" id="addTaskBtn">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="12" y1="5" x2="12" y2="19"></line>
