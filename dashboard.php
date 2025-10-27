@@ -213,6 +213,66 @@ $weekday = ['日', '一', '二', '三', '四', '五', '六'][date('w')];
         </div>
     </div>
 
+    <!-- 任务模态框 -->
+    <div id="taskModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">编辑任务</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <form id="taskForm" class="modal-form">
+                <input type="hidden" id="taskId" name="task_id">
+                
+                <div class="form-group">
+                    <label for="taskTitle">任务标题 *</label>
+                    <input type="text" id="taskTitle" name="title" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="taskDescription">任务描述</label>
+                    <textarea id="taskDescription" name="description" rows="3"></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="taskStatus">状态</label>
+                        <select id="taskStatus" name="status">
+                            <option value="pending">待办</option>
+                            <option value="in_progress">进行中</option>
+                            <option value="completed">已完成</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="taskPriority">优先级</label>
+                        <select id="taskPriority" name="priority">
+                            <option value="low">低</option>
+                            <option value="medium">中</option>
+                            <option value="high">高</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="taskCategory">分类</label>
+                        <input type="text" id="taskCategory" name="category">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="taskDueDate">截止日期</label>
+                        <input type="date" id="taskDueDate" name="due_date">
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary modal-cancel">取消</button>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script src="js/script.js"></script>
     <script>
         // 支持回车键快速添加任务

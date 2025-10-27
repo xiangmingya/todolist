@@ -39,6 +39,41 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             </svg>
             任务
         </a>
+        
+        <!-- 标签部分 -->
+        <div class="nav-section">
+            <div class="nav-section-header">
+                <span class="nav-section-title">标签</span>
+                <button class="btn-icon btn-add-tag" id="sidebarAddTagBtn" title="添加标签">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                </button>
+            </div>
+            <div id="tagsList">
+                <?php
+                if (isset($auth) && $auth->isLoggedIn()) {
+                    require_once __DIR__ . '/functions.php';
+                    $tagManager = new TagManager($auth->getUserId());
+                    $userTags = $tagManager->getTags();
+                    
+                    if (!empty($userTags)) {
+                        foreach ($userTags as $tag) {
+                            $isActive = ($currentPage === 'tags.php' && isset($_GET['id']) && $_GET['id'] == $tag['id']) ? 'active' : '';
+                            echo '<a href="tags.php?id=' . $tag['id'] . '" class="nav-link nav-tag ' . $isActive . '">';
+                            echo '<span class="tag-color-dot" style="background: ' . htmlspecialchars($tag['color']) . '; width: 8px; height: 8px; border-radius: 50%; display: inline-block;"></span>';
+                            echo htmlspecialchars($tag['name']);
+                            echo '</a>';
+                        }
+                    } else {
+                        echo '<div class="nav-empty" style="padding: 8px 24px; color: var(--text-secondary); font-size: 12px;">暂无标签</div>';
+                    }
+                }
+                ?>
+            </div>
+        </div>
+        
         <a href="stats.php" class="nav-link <?php echo $currentPage === 'stats.php' ? 'active' : ''; ?>">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="12" y1="20" x2="12" y2="10"></line>
