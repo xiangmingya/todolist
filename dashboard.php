@@ -7,8 +7,10 @@ $auth = new Auth();
 $auth->requireLogin();
 
 $taskManager = new TaskManager($auth->getUserId());
+$tagManager = new TagManager($auth->getUserId());
 $stats = $taskManager->getTaskStats();
 $todayTasks = $taskManager->getTasks(['status' => 'pending']);
+$allTags = $tagManager->getTags();
 
 // 获取今天的日期
 $today = date('Y年m月d日');
@@ -109,6 +111,14 @@ $weekday = ['日', '一', '二', '三', '四', '五', '六'][date('w')];
                             <option value="medium" selected>🟡 中优先级</option>
                             <option value="high">🔴 高优先级</option>
                         </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="quickTaskCategory" name="category" placeholder="标签（可选）" list="quickCategoryList">
+                        <datalist id="quickCategoryList">
+                            <?php foreach ($allTags as $tag): ?>
+                                <option value="<?php echo htmlspecialchars($tag['name']); ?>">
+                            <?php endforeach; ?>
+                        </datalist>
                     </div>
                     <div class="form-group">
                         <input type="date" id="quickTaskDate" name="due_date" placeholder="截止日期">
@@ -255,7 +265,7 @@ $weekday = ['日', '一', '二', '三', '四', '五', '六'][date('w')];
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="taskCategory">分类</label>
+                        <label for="taskCategory">标签</label>
                         <input type="text" id="taskCategory" name="category">
                     </div>
 
@@ -273,7 +283,39 @@ $weekday = ['日', '一', '二', '三', '四', '五', '六'][date('w')];
         </div>
     </div>
 
+    <!-- 标签编辑模态框 -->
+    <div id="tagModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="tagModalTitle">新建标签</h2>
+                <button class="modal-close" data-modal="tagModal">&times;</button>
+            </div>
+            <form id="tagForm" class="modal-form">
+                <input type="hidden" id="tagId" name="tag_id">
+                
+                <div class="form-group">
+                    <label for="tagName">标签名称 *</label>
+                    <input type="text" id="tagName" name="name" required maxlength="50">
+                </div>
+
+                <div class="form-group">
+                    <label for="tagColor">标签颜色</label>
+                    <div style="display: flex; gap: 8px; align-items: center;">
+                        <input type="color" id="tagColor" name="color" value="#808080" style="width: 60px; height: 40px; border: none; cursor: pointer;">
+                        <input type="text" id="tagColorHex" value="#808080" readonly style="width: 100px; padding: 8px;">
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary modal-cancel" data-modal="tagModal">取消</button>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script src="js/script.js"></script>
+    <script src="js/tags.js"></script>
     <script>
         // 支持回车键快速添加任务
         document.getElementById('quickTaskTitle').addEventListener('keypress', function(e) {

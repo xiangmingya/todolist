@@ -73,7 +73,7 @@ $categories = $taskManager->getCategories();
 
                 <div class="filter-group">
                     <select name="category">
-                        <option value="">所有分类</option>
+                        <option value="">所有标签</option>
                         <?php foreach ($categories as $category): ?>
                             <option value="<?php echo htmlspecialchars($category); ?>" 
                                     <?php echo $filters['category'] === $category ? 'selected' : ''; ?>>
@@ -109,7 +109,7 @@ $categories = $taskManager->getCategories();
                                 <th>任务</th>
                                 <th>状态</th>
                                 <th>优先级</th>
-                                <th>分类</th>
+                                <th>标签</th>
                                 <th>截止日期</th>
                                 <th>操作</th>
                             </tr>
@@ -213,7 +213,7 @@ $categories = $taskManager->getCategories();
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="taskCategory">分类</label>
+                        <label for="taskCategory">标签</label>
                         <input type="text" id="taskCategory" name="category" list="categoryList">
                         <datalist id="categoryList">
                             <?php foreach ($categories as $category): ?>
@@ -236,6 +236,38 @@ $categories = $taskManager->getCategories();
         </div>
     </div>
 
+    <!-- 标签编辑模态框 -->
+    <div id="tagModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="tagModalTitle">新建标签</h2>
+                <button class="modal-close" data-modal="tagModal">&times;</button>
+            </div>
+            <form id="tagForm" class="modal-form">
+                <input type="hidden" id="tagId" name="tag_id">
+                
+                <div class="form-group">
+                    <label for="tagName">标签名称 *</label>
+                    <input type="text" id="tagName" name="name" required maxlength="50">
+                </div>
+
+                <div class="form-group">
+                    <label for="tagColor">标签颜色</label>
+                    <div style="display: flex; gap: 8px; align-items: center;">
+                        <input type="color" id="tagColor" name="color" value="#808080" style="width: 60px; height: 40px; border: none; cursor: pointer;">
+                        <input type="text" id="tagColorHex" value="#808080" readonly style="width: 100px; padding: 8px;">
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary modal-cancel" data-modal="tagModal">取消</button>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script src="js/script.js"></script>
+    <script src="js/tags.js"></script>
 </body>
 </html>

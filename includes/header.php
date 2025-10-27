@@ -44,12 +44,19 @@ $currentPage = basename($_SERVER['PHP_SELF']);
         <div class="nav-section">
             <div class="nav-section-header">
                 <span class="nav-section-title">标签</span>
-                <button class="btn-icon btn-add-tag" id="sidebarAddTagBtn" title="添加标签">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="12" y1="5" x2="12" y2="19"></line>
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                    </svg>
-                </button>
+                <div style="display: flex; gap: 4px;">
+                    <button class="btn-icon btn-toggle-tags" id="toggleTagsBtn" title="收起/展开标签">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <button class="btn-icon btn-add-tag" id="sidebarAddTagBtn" title="添加标签">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                    </button>
+                </div>
             </div>
             <div id="tagsList">
                 <?php
@@ -119,4 +126,33 @@ document.querySelectorAll('.nav-link').forEach(link => {
         }
     });
 });
+
+// 标签列表收起/展开功能
+const toggleTagsBtn = document.getElementById('toggleTagsBtn');
+const tagsList = document.getElementById('tagsList');
+
+if (toggleTagsBtn && tagsList) {
+    // 从 localStorage 读取状态
+    const isCollapsed = localStorage.getItem('tagsCollapsed') === 'true';
+    
+    // 设置初始状态
+    if (isCollapsed) {
+        tagsList.style.display = 'none';
+        toggleTagsBtn.classList.add('collapsed');
+    }
+    
+    toggleTagsBtn.addEventListener('click', function() {
+        const isCurrentlyCollapsed = tagsList.style.display === 'none';
+        
+        if (isCurrentlyCollapsed) {
+            tagsList.style.display = 'block';
+            toggleTagsBtn.classList.remove('collapsed');
+            localStorage.setItem('tagsCollapsed', 'false');
+        } else {
+            tagsList.style.display = 'none';
+            toggleTagsBtn.classList.add('collapsed');
+            localStorage.setItem('tagsCollapsed', 'true');
+        }
+    });
+}
 </script>
