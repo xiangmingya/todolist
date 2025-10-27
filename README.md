@@ -48,39 +48,21 @@
 
 ## 安装步骤
 
-### 方法一：宝塔面板部署
+### 简单安装（推荐）
 
-1. **创建网站**
-   - 登录宝塔面板
-   - 创建新网站，设置域名和根目录
-   - PHP 版本选择 7.4 或更高
-
-2. **上传代码**
+1. **上传文件**
    - 将所有文件上传到网站根目录
 
-3. **创建数据库**
-   - 在宝塔面板创建 MySQL 数据库
-   - 记录数据库名、用户名和密码
-
-4. **配置数据库连接**
-   - 编辑 `includes/config.php`
-   - 修改数据库配置信息：
-     ```php
-     define('DB_HOST', 'localhost');
-     define('DB_USER', 'your_db_user');
-     define('DB_PASS', 'your_db_password');
-     define('DB_NAME', 'task_manager');
-     ```
-
-5. **初始化数据库**
+2. **运行安装向导**
    - 访问 `http://your-domain.com/install.php`
-   - 等待数据库表创建完成
+   - 按照界面提示填写数据库信息
+   - 系统将自动创建数据库和数据表
 
-6. **完成安装**
+3. **开始使用**
    - 访问 `http://your-domain.com/register.php` 注册账户
-   - 开始使用系统
+   - 登录后开始使用系统
 
-### 方法二：本地开发环境
+### 本地开发环境
 
 1. **环境要求**
    - PHP 7.4 或更高版本
@@ -93,14 +75,11 @@
    cd task_manager
    ```
 
-3. **配置数据库**
-   - 创建 MySQL 数据库
-   - 修改 `includes/config.php` 中的数据库配置
-
-4. **初始化数据库**
+3. **运行安装向导**
    - 访问 `http://localhost/task_manager/install.php`
+   - 填写数据库信息完成安装
 
-5. **启动项目**
+4. **启动项目**
    - 访问 `http://localhost/task_manager`
 
 ## 项目结构
@@ -113,10 +92,12 @@ task_manager/
 ├── logout.php             # 退出登录
 ├── dashboard.php          # 仪表板
 ├── tasks.php              # 任务管理页面
+├── tags.php               # 标签管理页面
 ├── stats.php              # 统计图表页面
-├── install.php            # 数据库安装脚本
+├── install.php            # 统一安装向导（数据库配置+安装）
 ├── README.md              # 项目文档
 ├── .gitignore             # Git 忽略文件
+├── .htaccess              # Apache 配置
 ├── includes/              # 核心功能模块
 │   ├── config.php         # 配置文件
 │   ├── database.php       # 数据库连接类
@@ -126,7 +107,8 @@ task_manager/
 ├── css/                   # 样式文件
 │   └── style.css          # 主样式文件
 ├── js/                    # JavaScript 文件
-│   └── script.js          # 主脚本文件
+│   ├── script.js          # 主脚本文件
+│   └── tags.js            # 标签管理脚本
 └── api/                   # API 接口
     ├── tasks.php          # 任务 API
     └── stats.php          # 统计 API
@@ -161,6 +143,21 @@ CREATE TABLE tasks (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 ```
+
+### tags 表（标签表）
+```sql
+CREATE TABLE tags (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    name VARCHAR(50) NOT NULL,
+    color VARCHAR(7) DEFAULT '#808080',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    UNIQUE KEY unique_user_tag (user_id, name)
+);
+```
+
+**注意**: 系统使用单一数据库 `task_manager`，所有数据表统一管理。
 
 ## API 接口
 
@@ -213,10 +210,13 @@ CREATE TABLE tasks (
 ## 常见问题
 
 **Q: 安装时数据库连接失败？**
-A: 检查 `includes/config.php` 中的数据库配置是否正确。
+A: 请确保数据库服务器运行正常，并检查填写的数据库用户名和密码是否正确。
 
 **Q: 无法访问页面？**
 A: 确保 PHP 版本 >= 7.4，并且 Web 服务器配置正确。
+
+**Q: 安装向导显示错误？**
+A: 检查 includes/ 目录是否有写入权限，系统需要写入配置文件。
 
 **Q: 图表不显示？**
 A: 确保网络连接正常，Chart.js CDN 可以访问。
@@ -247,8 +247,6 @@ A: 修改 `includes/config.php` 中的 `SESSION_LIFETIME` 常量。
 - 8px 圆角设计
 - 扁平化风格
 - 响应式侧边栏（移动端滑出式）
-
-详细设计文档请查看: [TODOIST_DESIGN.md](TODOIST_DESIGN.md)
 
 ## 后续优化建议
 
