@@ -162,13 +162,24 @@ a:hover {
     letter-spacing: 0.5px;
 }
 
-.btn-add-tag {
+.btn-add-tag,
+.btn-toggle-tags {
     opacity: 0;
-    transition: opacity 0.2s;
+    transition: opacity 0.2s, transform 0.2s;
 }
 
-.nav-section:hover .btn-add-tag {
+.nav-section:hover .btn-add-tag,
+.nav-section:hover .btn-toggle-tags {
     opacity: 1;
+}
+
+.btn-toggle-tags.collapsed svg {
+    transform: rotate(-90deg);
+}
+
+#tagsList {
+    transition: all 0.3s ease;
+    overflow: hidden;
 }
 
 .nav-tag {
@@ -402,13 +413,18 @@ a:hover {
 }
 
 .quick-task-form select,
-.quick-task-form input[type="date"] {
+.quick-task-form input[type="date"],
+.quick-task-form input[type="text"] {
     padding: 6px 10px;
     border: 1px solid var(--border-dark);
     border-radius: 5px;
     font-size: 12px;
     color: var(--text-primary);
     background: white;
+}
+
+.quick-task-form input[type="text"]:not(#quickTaskTitle) {
+    min-width: 120px;
 }
 
 /* 任务列表 - Todoist 风格 */

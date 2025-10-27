@@ -192,6 +192,7 @@ if (quickTaskForm) {
         const formData = {
             title: document.getElementById('quickTaskTitle').value,
             priority: document.getElementById('quickTaskPriority').value,
+            category: document.getElementById('quickTaskCategory')?.value || null,
             due_date: document.getElementById('quickTaskDate').value || null,
             status: 'pending'
         };

@@ -206,7 +206,7 @@ $allTags = $tagManager->getTags();
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="taskCategory">分类</label>
+                        <label for="taskCategory">标签</label>
                         <input type="text" id="taskCategory" name="category">
                     </div>
 
