@@ -21,7 +21,8 @@ $stats = $taskManager->getTaskStats();
 <body>
     <?php include 'includes/header.php'; ?>
 
-    <div class="container">
+    <div class="main-wrapper">
+        <div class="container">
         <div class="page-header">
             <div>
                 <h1>统计图表</h1>
@@ -49,6 +50,7 @@ $stats = $taskManager->getTaskStats();
                 <h3>状态分布</h3>
                 <canvas id="statusChart"></canvas>
             </div>
+        </div>
         </div>
     </div>
 

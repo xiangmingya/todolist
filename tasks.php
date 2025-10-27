@@ -30,7 +30,8 @@ $categories = $taskManager->getCategories();
 <body>
     <?php include 'includes/header.php'; ?>
 
-    <div class="container">
+    <div class="main-wrapper">
+        <div class="container">
         <div class="page-header">
             <div>
                 <h1>任务管理</h1>
@@ -166,6 +167,7 @@ $categories = $taskManager->getCategories();
                     </table>
                 </div>
             <?php endif; ?>
+        </div>
         </div>
     </div>
 
