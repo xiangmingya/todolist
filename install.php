@@ -42,7 +42,7 @@ $sql = "CREATE TABLE IF NOT EXISTS tasks (
     description TEXT,
     status ENUM('pending', 'in_progress', 'completed') DEFAULT 'pending',
     priority ENUM('low', 'medium', 'high') DEFAULT 'medium',
-    category VARCHAR(50),
+    tag VARCHAR(50),
     due_date DATE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

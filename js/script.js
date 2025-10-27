@@ -83,7 +83,7 @@ function loadTaskData(taskId) {
                 document.getElementById('taskDescription').value = task.description || '';
                 document.getElementById('taskStatus').value = task.status;
                 document.getElementById('taskPriority').value = task.priority;
-                document.getElementById('taskCategory').value = task.category || '';
+                document.getElementById('taskTag').value = task.tag || '';
                 document.getElementById('taskDueDate').value = task.due_date || '';
             } else {
                 showNotification('加载任务失败', 'error');
@@ -108,7 +108,7 @@ if (taskForm) {
             description: document.getElementById('taskDescription').value,
             status: document.getElementById('taskStatus').value,
             priority: document.getElementById('taskPriority').value,
-            category: document.getElementById('taskCategory').value,
+            tag: document.getElementById('taskTag').value,
             due_date: document.getElementById('taskDueDate').value || null
         };
         
@@ -192,7 +192,7 @@ if (quickTaskForm) {
         const formData = {
             title: document.getElementById('quickTaskTitle').value,
             priority: document.getElementById('quickTaskPriority').value,
-            category: document.getElementById('quickTaskCategory')?.value || null,
+            tag: document.getElementById('quickTaskTag')?.value || null,
             due_date: document.getElementById('quickTaskDate').value || null,
             status: 'pending'
         };

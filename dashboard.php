@@ -113,8 +113,8 @@ $weekday = ['日', '一', '二', '三', '四', '五', '六'][date('w')];
                         </select>
                     </div>
                     <div class="form-group">
-                        <input type="text" id="quickTaskCategory" name="category" placeholder="标签（可选）" list="quickCategoryList">
-                        <datalist id="quickCategoryList">
+                        <input type="text" id="quickTaskTag" name="tag" placeholder="标签（可选）" list="quickTagList">
+                        <datalist id="quickTagList">
                             <?php foreach ($allTags as $tag): ?>
                                 <option value="<?php echo htmlspecialchars($tag['name']); ?>">
                             <?php endforeach; ?>
@@ -156,13 +156,13 @@ $weekday = ['日', '一', '二', '三', '四', '五', '六'][date('w')];
                             </div>
                             <div class="task-content">
                                 <h4><?php echo htmlspecialchars($task['title']); ?></h4>
-                                <?php if ($task['due_date'] || $task['category']): ?>
+                                <?php if ($task['due_date'] || $task['tag']): ?>
                                     <div class="task-meta">
                                         <?php if ($task['due_date']): ?>
                                             <span class="task-date">📅 <?php echo date('m月d日', strtotime($task['due_date'])); ?></span>
                                         <?php endif; ?>
-                                        <?php if ($task['category']): ?>
-                                            <span class="task-category">🏷️ <?php echo htmlspecialchars($task['category']); ?></span>
+                                        <?php if ($task['tag']): ?>
+                                            <span class="task-tag">🏷️ <?php echo htmlspecialchars($task['tag']); ?></span>
                                         <?php endif; ?>
                                         <span class="<?php echo $priorityClass; ?>"><?php echo $priorityIcon; ?> <?php echo getPriorityLabel($task['priority']); ?></span>
                                     </div>
@@ -265,8 +265,8 @@ $weekday = ['日', '一', '二', '三', '四', '五', '六'][date('w')];
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="taskCategory">标签</label>
-                        <input type="text" id="taskCategory" name="category">
+                        <label for="taskTag">标签</label>
+                        <input type="text" id="taskTag" name="tag">
                     </div>
 
                     <div class="form-group">

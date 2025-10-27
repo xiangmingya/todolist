@@ -31,7 +31,7 @@ try {
                 $filters = [
                     'status' => $_GET['status'] ?? '',
                     'priority' => $_GET['priority'] ?? '',
-                    'category' => $_GET['category'] ?? '',
+                    'tag' => $_GET['tag'] ?? '',
                     'search' => $_GET['search'] ?? ''
                 ];
                 $tasks = $taskManager->getTasks($filters);
@@ -53,7 +53,7 @@ try {
                 $data['description'] ?? '',
                 $data['status'] ?? 'pending',
                 $data['priority'] ?? 'medium',
-                $data['category'] ?? '',
+                $data['tag'] ?? '',
                 $data['due_date'] ?? null
             );
 
@@ -80,7 +80,7 @@ try {
             if (isset($data['description'])) $updateData['description'] = $data['description'];
             if (isset($data['status'])) $updateData['status'] = $data['status'];
             if (isset($data['priority'])) $updateData['priority'] = $data['priority'];
-            if (isset($data['category'])) $updateData['category'] = $data['category'];
+            if (isset($data['tag'])) $updateData['tag'] = $data['tag'];
             if (isset($data['due_date'])) $updateData['due_date'] = $data['due_date'];
 
             $result = $taskManager->updateTask($data['id'], $updateData);

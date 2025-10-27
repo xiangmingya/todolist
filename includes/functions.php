@@ -11,9 +11,9 @@ class TaskManager {
         $this->userId = $userId;
     }
 
-    public function createTask($title, $description, $status, $priority, $category, $dueDate) {
-        $stmt = $this->db->prepare("INSERT INTO tasks (user_id, title, description, status, priority, category, due_date) VALUES (?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("issssss", $this->userId, $title, $description, $status, $priority, $category, $dueDate);
+    public function createTask($title, $description, $status, $priority, $tag, $dueDate) {
+        $stmt = $this->db->prepare("INSERT INTO tasks (user_id, title, description, status, priority, tag, due_date) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("issssss", $this->userId, $title, $description, $status, $priority, $tag, $dueDate);
         
         if ($stmt->execute()) {
             return ['success' => true, 'message' => '任务创建成功', 'task_id' => $this->db->lastInsertId()];
@@ -39,9 +39,9 @@ class TaskManager {
             $types .= "s";
         }
 
-        if (!empty($filters['category'])) {
-            $sql .= " AND category = ?";
-            $params[] = $filters['category'];
+        if (!empty($filters['tag'])) {
+            $sql .= " AND tag = ?";
+            $params[] = $filters['tag'];
             $types .= "s";
         }
 
@@ -106,9 +106,9 @@ class TaskManager {
             $types .= "s";
         }
 
-        if (isset($data['category'])) {
-            $fields[] = "category = ?";
-            $params[] = $data['category'];
+        if (isset($data['tag'])) {
+            $fields[] = "tag = ?";
+            $params[] = $data['tag'];
             $types .= "s";
         }
 
@@ -178,14 +178,14 @@ class TaskManager {
             $stats['by_priority'][$row['priority']] = $row['count'];
         }
 
-        // 按分类统计
-        $stmt = $this->db->prepare("SELECT category, COUNT(*) as count FROM tasks WHERE user_id = ? GROUP BY category");
+        // 按标签统计
+        $stmt = $this->db->prepare("SELECT tag, COUNT(*) as count FROM tasks WHERE user_id = ? GROUP BY tag");
         $stmt->bind_param("i", $this->userId);
         $stmt->execute();
         $result = $stmt->get_result();
-        $stats['by_category'] = [];
+        $stats['by_tag'] = [];
         while ($row = $result->fetch_assoc()) {
-            $stats['by_category'][$row['category']] = $row['count'];
+            $stats['by_tag'][$row['tag']] = $row['count'];
         }
 
         // 今日到期任务
@@ -205,18 +205,18 @@ class TaskManager {
         return $stats;
     }
 
-    public function getCategories() {
-        $stmt = $this->db->prepare("SELECT DISTINCT category FROM tasks WHERE user_id = ? AND category IS NOT NULL AND category != ''");
+    public function getTags() {
+        $stmt = $this->db->prepare("SELECT DISTINCT tag FROM tasks WHERE user_id = ? AND tag IS NOT NULL AND tag != ''");
         $stmt->bind_param("i", $this->userId);
         $stmt->execute();
         $result = $stmt->get_result();
 
-        $categories = [];
+        $tags = [];
         while ($row = $result->fetch_assoc()) {
-            $categories[] = $row['category'];
+            $tags[] = $row['tag'];
         }
 
-        return $categories;
+        return $tags;
     }
 }
 

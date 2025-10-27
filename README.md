@@ -20,14 +20,14 @@
 ### 2. 任务管理模块
 - 任务的增删改查（CRUD）
 - 任务状态管理（待办/进行中/已完成）
-- 任务分类和标签
+- 任务标签管理
 - 优先级设置（低/中/高）
 - 截止日期设置
 - 任务搜索和筛选
 
 ### 3. 统计图表模块
 - 任务完成情况统计（甜甜圈图）
-- 分类分布饼图
+- 标签分布饼图
 - 优先级分布柱状图
 - 状态分布柱状图
 
@@ -154,7 +154,7 @@ CREATE TABLE tasks (
     description TEXT,
     status ENUM('pending', 'in_progress', 'completed') DEFAULT 'pending',
     priority ENUM('low', 'medium', 'high') DEFAULT 'medium',
-    category VARCHAR(50),
+    tag VARCHAR(50),
     due_date DATE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -167,13 +167,13 @@ CREATE TABLE tasks (
 ### 任务 API (`/api/tasks.php`)
 
 - **GET** - 获取任务列表或单个任务
-  - 查询参数：`id`, `status`, `priority`, `category`, `search`
+  - 查询参数：`id`, `status`, `priority`, `tag`, `search`
   
 - **POST** - 创建新任务
-  - 请求体：`title`, `description`, `status`, `priority`, `category`, `due_date`
+  - 请求体：`title`, `description`, `status`, `priority`, `tag`, `due_date`
   
 - **PUT** - 更新任务
-  - 请求体：`id`, `title`, `description`, `status`, `priority`, `category`, `due_date`
+  - 请求体：`id`, `title`, `description`, `status`, `priority`, `tag`, `due_date`
   
 - **DELETE** - 删除任务
   - 请求体：`id`
@@ -181,7 +181,7 @@ CREATE TABLE tasks (
 ### 统计 API (`/api/stats.php`)
 
 - **GET** - 获取任务统计数据
-  - 返回：总任务数、状态分布、优先级分布、分类分布等
+  - 返回：总任务数、状态分布、优先级分布、标签分布等
 
 ## 使用说明
 

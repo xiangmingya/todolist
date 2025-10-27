@@ -42,8 +42,8 @@ $stats = $taskManager->getTaskStats();
             </div>
 
             <div class="chart-card">
-                <h3>分类分布</h3>
-                <canvas id="categoryChart"></canvas>
+                <h3>标签分布</h3>
+                <canvas id="tagChart"></canvas>
             </div>
 
             <div class="chart-card">
@@ -132,24 +132,24 @@ $stats = $taskManager->getTaskStats();
             }
         });
 
-        // 分类分布 - 饼图
-        const categoryCtx = document.getElementById('categoryChart').getContext('2d');
-        const categoryData = statsData.by_category || {};
-        const categoryLabels = Object.keys(categoryData);
-        const categoryValues = Object.values(categoryData);
+        // 标签分布 - 饼图
+        const tagCtx = document.getElementById('tagChart').getContext('2d');
+        const tagData = statsData.by_tag || {};
+        const tagLabels = Object.keys(tagData);
+        const tagValues = Object.values(tagData);
         
-        const categoryColors = [
+        const tagColors = [
             '#dc4c3e', '#246fe0', '#ff9a14', '#058527', 
             '#8b5cf6', '#ec4899', '#f59e0b', '#10b981'
         ];
         
-        new Chart(categoryCtx, {
+        new Chart(tagCtx, {
             type: 'pie',
             data: {
-                labels: categoryLabels.length > 0 ? categoryLabels : ['未分类'],
+                labels: tagLabels.length > 0 ? tagLabels : ['无标签'],
                 datasets: [{
-                    data: categoryValues.length > 0 ? categoryValues : [totalCount],
-                    backgroundColor: categoryColors.slice(0, categoryLabels.length || 1),
+                    data: tagValues.length > 0 ? tagValues : [totalCount],
+                    backgroundColor: tagColors.slice(0, tagLabels.length || 1),
                     borderWidth: 0
                 }]
             },
