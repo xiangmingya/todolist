@@ -25,7 +25,8 @@ $weekday = ['日', '一', '二', '三', '四', '五', '六'][date('w')];
 <body>
     <?php include 'includes/header.php'; ?>
 
-    <div class="container">
+    <div class="main-wrapper">
+        <div class="container">
         <!-- 页面标题 - Todoist 风格 -->
         <div class="page-header">
             <div>
@@ -209,6 +210,7 @@ $weekday = ['日', '一', '二', '三', '四', '五', '六'][date('w')];
             </div>
         </div>
         <?php endif; ?>
+        </div>
     </div>
 
     <script src="js/script.js"></script>
